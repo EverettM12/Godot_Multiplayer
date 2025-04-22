@@ -1,0 +1,164 @@
+[gd_scene load_steps=12 format=3 uid="uid://ca6vuiof6mwa"]
+
+[ext_resource type="Script" uid="uid://b1j1pi3nw4kqt" path="res://scripts/Goal.gd" id="2_debgh"]
+[ext_resource type="Script" uid="uid://ch6omvqbsw3aj" path="res://addons/post_processing/node/post_process.gd" id="3_x42e6"]
+[ext_resource type="Script" uid="uid://dv4o2motdge7i" path="res://addons/post_processing/resource/post_processing_configuration.gd" id="4_6761a"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nsrm0"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_x42e6"]
+sky_material = SubResource("ProceduralSkyMaterial_nsrm0")
+
+[sub_resource type="Environment" id="Environment_6761a"]
+background_mode = 2
+sky = SubResource("Sky_x42e6")
+tonemap_mode = 2
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_nsrm0"]
+dof_blur_far_enabled = true
+dof_blur_far_distance = 50.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6iamk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nsrm0"]
+albedo_color = Color(0, 0.137352, 0.137488, 1)
+
+[sub_resource type="Resource" id="Resource_sk5k4"]
+script = ExtResource("4_6761a")
+reload = false
+ASCII = false
+ASCIISize = Vector2(4, 9)
+ChromaticAberration = false
+StrenghtCA = 1.0
+Blur = false
+L_O_D = 1.0
+FishEye = false
+FishEyeAspect = 1.0
+FishEyeDistortion = 1.0
+FishEyeRadius = 1.0
+FishEyeAlpha = 1.0
+FishEyeCrop = 1.0
+FishEyeCropColor = Color(0, 0, 0, 1)
+Vignette = false
+VignetteIntensity = 0.4
+VignetteOpacity = 0.5
+VignetteR_G_B = Color(0, 0, 0, 1)
+Glitch = false
+GlitchRange = 0.05
+GlitchNoiseQuality = 250.0
+GlitchIntenity = 0.0088
+GlitchOffset = 0.03
+GlitchColorOffset = 1.3
+Outline = false
+OutlineColor = Color(0, 0, 0, 1)
+OutlineThreshold = 0.0
+OutlineBlend = 0.01
+Grain = false
+GrainPower = 10
+CircularWaves = false
+CircularWavesAmplitude = 2.0
+CircularWavesFrequency = 12.69
+CircularWavesRippleRate = 9.2
+SpeedLines = false
+SpeedLinesColor = Color(1, 1, 1, 1)
+SpeedLinesCount = 2
+SpeedLineDensity = 0.072
+SpeedLineSpeed = 20
+particle_storm = false
+particle_storm_color = Color(0.87, 0.78, 0.6, 1)
+particle_storm_intensity = 0.5
+particle_storm_chaos = 1.0
+particle_storm_scale = 1.0
+particle_storm_density = 1.0
+particle_storm_wind_direction = Vector2(1, 0.2)
+particle_storm_wind_speed = 1.0
+directional_drift = false
+directional_drift_color = Color(0.76, 0.69, 0.5, 0.3)
+directional_drift_density = 0.3
+directional_drift_speed = 1.0
+directional_drift_scale = 30.0
+directional_drift_direction = Vector2(1, 0.5)
+directional_drift_layer_ratio = 1.2
+ColorCorrection = false
+ColorCorrectionTint = Color(0, 0, 0, 1)
+ColorCorrectionBrightness = 0.0
+ColorCorrectionSaturation = 0.0
+Palette = false
+Pixelate = false
+PixelatePixelSize = 8
+CRT = false
+overlay = false
+scanlines_opacity = 0.4
+scanlines_width = 0.25
+grille_opacity = 0.3
+pixelate = true
+roll_speed = 8.0
+roll_size = 15.0
+roll_variation = 1.8
+distort_intensity = 0.05
+noise_opacity = 0.4
+noise_speed = 5.0
+static_noise_intensity = 0.06
+aberration = 0.03
+brightness = 1.4
+discolor = true
+warp_amount = 1.0
+clip_warp = false
+vignette_intensity = 0.4
+vignette_opacity = 0.5
+AnalogMonitor = false
+AnalogMonitorResolution = Vector2(256, 256)
+ScreenShake = false
+ScreenShakePower = 0.1
+metadata/_custom_type_script = "uid://dv4o2motdge7i"
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_nsrm0"]
+
+[node name="Level_1" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_6761a")
+camera_attributes = SubResource("CameraAttributesPractical_nsrm0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Goal" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8, 0.8, 0)
+script = ExtResource("2_debgh")
+scene_to_load = "res://scenes/levels/level_2.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape3D" parent="Goal"]
+shape = SubResource("BoxShape3D_6iamk")
+debug_color = Color(1, 0, 0.14902, 0.419608)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Goal"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+use_collision = true
+size = Vector3(50, 0.2, 50)
+material = SubResource("StandardMaterial3D_nsrm0")
+
+[node name="PostProcess" type="CanvasLayer" parent="."]
+script = ExtResource("3_x42e6")
+configuration = SubResource("Resource_sk5k4")
+metadata/_custom_type_script = "uid://ch6omvqbsw3aj"
+
+[node name="DeathBarrier" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.19576, 0)
+script = ExtResource("2_debgh")
+scene_to_load = "res://scenes/levels/level_1.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape3D" parent="DeathBarrier"]
+shape = SubResource("WorldBoundaryShape3D_nsrm0")
+debug_color = Color(1, 0, 0.14902, 0.419608)
+
+[connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
+[connection signal="body_entered" from="DeathBarrier" to="DeathBarrier" method="_on_body_entered"]

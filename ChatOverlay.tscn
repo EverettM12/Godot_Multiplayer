@@ -1,0 +1,156 @@
+[gd_scene load_steps=6 format=3 uid="uid://cquyprb3f0o57"]
+
+[ext_resource type="Script" uid="uid://ky6a570te5x2" path="res://scripts/chat_overlay.gd" id="1_m3g8y"]
+
+[sub_resource type="Animation" id="Animation_wcg7c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_j1gc3"]
+resource_name = "chatclosed"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_m3g8y"]
+resource_name = "chatopen"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yy5nh"]
+_data = {
+&"RESET": SubResource("Animation_wcg7c"),
+&"chatclosed": SubResource("Animation_j1gc3"),
+&"chatopen": SubResource("Animation_m3g8y")
+}
+
+[node name="ChatOverlay" type="Control"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_m3g8y")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="PlayerList" type="Panel" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/PlayerList"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/PlayerList/VBoxContainer"]
+layout_mode = 2
+text = "Players:"
+
+[node name="PlayersList" type="ItemList" parent="MarginContainer/HBoxContainer/PlayerList/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Chat" type="Panel" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Chat"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Chat/VBoxContainer"]
+layout_mode = 2
+text = "Chat Messages:"
+
+[node name="ChatMessages" type="RichTextLabel" parent="MarginContainer/HBoxContainer/Chat/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+bbcode_enabled = true
+text = "This is some text"
+scroll_following = true
+selection_enabled = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Chat/VBoxContainer"]
+layout_mode = 2
+
+[node name="Message" type="LineEdit" parent="MarginContainer/HBoxContainer/Chat/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Send" type="Button" parent="MarginContainer/HBoxContainer/Chat/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Send"
+
+[node name="NameField" type="LineEdit" parent="MarginContainer/HBoxContainer/Chat/VBoxContainer"]
+layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_yy5nh")
+}
+
+[connection signal="text_changed" from="MarginContainer/HBoxContainer/Chat/VBoxContainer/HBoxContainer/Message" to="." method="_on_message_text_changed"]
+[connection signal="text_submitted" from="MarginContainer/HBoxContainer/Chat/VBoxContainer/HBoxContainer/Message" to="." method="_on_message_text_submitted"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/Chat/VBoxContainer/HBoxContainer/Send" to="." method="_on_send_pressed"]
